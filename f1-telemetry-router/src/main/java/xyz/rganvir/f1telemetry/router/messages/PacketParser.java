@@ -1,6 +1,6 @@
-package xyz.rganvir.f1telemetry.messages;
+package xyz.rganvir.f1telemetry.router.messages;
 
-import org.assertj.core.util.VisibleForTesting;
+import com.google.common.annotations.VisibleForTesting;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +19,7 @@ public enum PacketParser {
             return null;
         }
 
-        return switch(header.packetId()) {
+        return switch (header.packetId()) {
             case 0 -> GameMessageFactory.motionMessage(byteParser);
             case 1 -> GameMessageFactory.carStatusMessage(byteParser);
             case 2 -> GameMessageFactory.lapDataMessage(byteParser);
@@ -33,20 +33,7 @@ public enum PacketParser {
 
     @VisibleForTesting
     public static PacketHeader getPacketHeader(ByteBufferParser buffer) {
-        return new PacketHeader(
-                buffer.getUint16(),
-                buffer.getUint8(),
-                buffer.getUint8(),
-                buffer.getUint8(),
-                buffer.getUint8(),
-                buffer.getUint8(),
-                buffer.getLong(),
-                buffer.getFloat(),
-                buffer.getUint32(),
-                buffer.getUint32(),
-                buffer.getUint8(),
-                buffer.getUint8()
-        );
+        return new PacketHeader(buffer.getUint16(), buffer.getUint8(), buffer.getUint8(), buffer.getUint8(), buffer.getUint8(), buffer.getUint8(), buffer.getLong(), buffer.getFloat(), buffer.getUint32(), buffer.getUint32(), buffer.getUint8(), buffer.getUint8());
     }
 
 }

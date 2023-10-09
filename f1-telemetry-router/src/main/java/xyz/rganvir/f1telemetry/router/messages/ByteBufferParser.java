@@ -1,4 +1,4 @@
-package xyz.rganvir.f1telemetry.messages;
+package xyz.rganvir.f1telemetry.router.messages;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

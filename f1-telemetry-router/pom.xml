@@ -27,6 +27,15 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
         </dependency>
     </dependencies>
 
@@ -37,7 +46,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>xyz.rganvir.f1telemetry.App</mainClass>
+                            <mainClass>xyz.rganvir.f1telemetry.router.App</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

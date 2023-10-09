@@ -1,7 +1,7 @@
-package xyz.rganvir.f1telemetry;
+package xyz.rganvir.f1telemetry.router;
 
-import xyz.rganvir.f1telemetry.messages.GameMessage;
-import xyz.rganvir.f1telemetry.messages.PacketParser;
+import xyz.rganvir.f1telemetry.router.messages.GameMessage;
+import xyz.rganvir.f1telemetry.router.messages.PacketParser;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -10,11 +10,13 @@ import java.net.DatagramSocket;
 public class FeedListener {
   private final int port;
   private final int maxPacketSize;
+  private final Publisher publisher;
   private volatile boolean shutdown;
 
-  public FeedListener(int port, int maxPacketSize) {
+  public FeedListener(int port, int maxPacketSize, Publisher publisher) {
     this.port = port;
     this.maxPacketSize = maxPacketSize;
+    this.publisher = publisher;
     this.shutdown = false;
   }
 
@@ -28,7 +30,7 @@ public class FeedListener {
 
         GameMessage message = PacketParser.parse(buffer);
         if (message != null) {
-
+          this.publisher.publish(message);
         }
 
         packet.setLength(this.maxPacketSize);

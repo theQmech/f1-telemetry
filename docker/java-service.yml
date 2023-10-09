@@ -1,0 +1,6 @@
+services:
+  java_app:
+    image: bitnami/java:21
+    volumes:
+      - ../target:/target
+    command: sh -c "java -cp '/target/*' $$JAVA_OPTS $$TARGET_CLASS"

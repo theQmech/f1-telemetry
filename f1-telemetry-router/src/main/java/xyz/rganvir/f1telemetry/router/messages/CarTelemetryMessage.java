@@ -1,4 +1,4 @@
-package xyz.rganvir.f1telemetry.messages;
+package xyz.rganvir.f1telemetry.router.messages;
 
 public record CarTelemetryMessage(
         CarTelemetryData[] carTelemetryData,

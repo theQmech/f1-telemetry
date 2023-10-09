@@ -1,4 +1,4 @@
-package xyz.rganvir.f1telemetry.messages;
+package xyz.rganvir.f1telemetry.router.messages;
 
 public record SessionHistoryMessage(
         int carIdx, // Index of the car this lap data relates to
