@@ -6,6 +6,11 @@ public record CarTelemetryMessage(
         int mfdPanelIndexSecondPlayer,
         int suggestedGear)
         implements GameMessage {
+    @Override
+    public MessageType type() {
+        return MessageType.CAR_TELEMETRY;
+    }
+
     record CarTelemetryData(
             int speed, // Speed of car in kilometres per hour
             float throttle, // Amount of throttle applied (0.0 to 1.0)

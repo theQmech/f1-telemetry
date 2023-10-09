@@ -2,6 +2,11 @@ package xyz.rganvir.f1telemetry.router.messages;
 
 public record LapDataMessage(LapData[] lapdata, int timeTrialPBCarIdx, int timeTrialRivalCarIdx)
         implements GameMessage {
+    @Override
+    public MessageType type() {
+        return MessageType.LAP_DATA;
+    }
+
     record LapData(
             long lastLapTimeInMS, // Last lap time in milliseconds
             long currentLapTimeInMS, // Current time around the lap in milliseconds

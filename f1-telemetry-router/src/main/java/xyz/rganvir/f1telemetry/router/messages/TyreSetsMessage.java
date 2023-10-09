@@ -1,6 +1,11 @@
 package xyz.rganvir.f1telemetry.router.messages;
 
 public record TyreSetsMessage(int cardId, TyreSetData[] tyreSetData, int fittedIdx) implements GameMessage{
+    @Override
+    public MessageType type() {
+        return MessageType.TYRE_SETS;
+    }
+
     record TyreSetData(
             int     actualTyreCompound,    // Actual tyre compound used
             int     visualTyreCompound,    // Visual tyre compound used

@@ -1,6 +1,11 @@
 package xyz.rganvir.f1telemetry.router.messages;
 
 public record CarDamageMessage(CarDamageData[] carDamageData) implements GameMessage {
+    @Override
+    public MessageType type() {
+        return MessageType.CAR_DAMAGE;
+    }
+
     record CarDamageData(
         float[] tyresWear, // Tyre wear (percentage)
         int[] tyresDamage, // Tyre damage (percentage)

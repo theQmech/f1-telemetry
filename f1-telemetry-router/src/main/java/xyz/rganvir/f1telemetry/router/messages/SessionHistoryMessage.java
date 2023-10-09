@@ -11,6 +11,11 @@ public record SessionHistoryMessage(
         LapHistoryData[] lapHistoryData, // 100 laps of data max
         TyreStintHistoryData[] tyreStintsHistoryData)
         implements GameMessage {
+    @Override
+    public MessageType type() {
+        return MessageType.SESSION_HISTORY;
+    }
+
     record LapHistoryData(
             long lapTimeInMS, // Lap time in milliseconds
             int sector1TimeInMS, // Sector 1 time in milliseconds

@@ -2,6 +2,11 @@ package xyz.rganvir.f1telemetry.router.messages;
 
 public record MotionMessage(CarMotionData[] carMotionData) implements GameMessage {
 
+    @Override
+    public MessageType type() {
+        return MessageType.MOTION;
+    }
+
     record CarMotionData(
             float worldPositionX, // World space X position - metres
             float worldPositionY, // World space Y position

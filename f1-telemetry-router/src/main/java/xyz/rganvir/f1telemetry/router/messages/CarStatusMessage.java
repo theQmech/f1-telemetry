@@ -1,6 +1,11 @@
 package xyz.rganvir.f1telemetry.router.messages;
 
 public record CarStatusMessage(CarStatusData[] carStatusData) implements GameMessage {
+    @Override
+    public MessageType type() {
+        return MessageType.CAR_STATUS;
+    }
+
     record CarStatusData(
             int tractionControl, // Traction control - 0 = off, 1 = medium, 2 = full
             int antiLockBrakes, // 0 (off) - 1 (on)

@@ -9,5 +9,6 @@ public class App {
         FeedListener feedListener = new FeedListener(FEED_PORT, MAX_PACKET_SIZE, publisher);
         feedListener.start();
         Runtime.getRuntime().addShutdownHook(new Thread(feedListener::stop));
+        Runtime.getRuntime().addShutdownHook(new Thread(publisher::stop));
     }
 }
