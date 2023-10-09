@@ -22,10 +22,15 @@ public class Publisher {
     }
 
     public void publish(GameMessage message) {
-        ProducerRecord<String, GameMessage> record = new ProducerRecord<>(topicOf(message.type()), message);
-        producer.send(record);
-        // flush data - synchronous
-        producer.flush();
+        String topic = topicOf(message.type());
+        ProducerRecord<String, GameMessage> record = new ProducerRecord<>(topic, message);
+        producer.send(record, (metadata, exception) -> {
+            if (exception == null) {
+                System.out.printf("Published to " + "topic" + " %s%n", metadata.topic());
+            } else {
+                System.out.println("Failed to send message " + exception.getStackTrace());
+            }
+        });
     }
 
     private String topicOf(MessageType type) {
@@ -33,6 +38,7 @@ public class Publisher {
     }
 
     public void stop() {
+        producer.flush();
         producer.close();
     }
 }

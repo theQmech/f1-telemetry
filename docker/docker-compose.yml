@@ -6,7 +6,7 @@ services:
       file: java-service.yml
       service: java_app
     ports:
-      - "8800:8800"
+      - "20777:20777/udp"
     environment:
       JVM_OPTS: >
         -DSERVER_PORT=8800

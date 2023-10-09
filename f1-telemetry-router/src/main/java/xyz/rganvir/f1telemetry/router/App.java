@@ -8,6 +8,9 @@ public class App {
         Publisher publisher = new Publisher();
         FeedListener feedListener = new FeedListener(FEED_PORT, MAX_PACKET_SIZE, publisher);
         feedListener.start();
+
+        System.out.println("Message router listening to feed");
+
         Runtime.getRuntime().addShutdownHook(new Thread(feedListener::stop));
         Runtime.getRuntime().addShutdownHook(new Thread(publisher::stop));
     }
