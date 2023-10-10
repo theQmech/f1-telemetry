@@ -9,9 +9,7 @@ services:
       - "20777:20777/udp"
     environment:
       JVM_OPTS: >
-        -DSERVER_PORT=8800
-        -DNTHREADS=100
-        -DVTHREADS=true
+        -DKAFKA_BOOTSTRAP_SERVER=kafka:29092
       TARGET_CLASS: xyz.rganvir.f1telemetry.router.App
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.1
@@ -25,9 +23,10 @@ services:
     depends_on:
       - zookeeper
     ports:
-      - 29092:29092
+      - "29092:29092"
     environment:
       KAFKA_BROKER_ID: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
