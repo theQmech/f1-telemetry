@@ -20,6 +20,9 @@ public class Publisher {
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, GameMessageSerializer.class.getName());
+        properties.setProperty(ProducerConfig.METADATA_MAX_IDLE_CONFIG, "10000");
+        properties.setProperty(ProducerConfig.METADATA_MAX_AGE_CONFIG, "10000");
+        properties.setProperty(ProducerConfig.MAX_BLOCK_MS_CONFIG, "10000");
         this.producer = new KafkaProducer<>(properties);
     }
 
