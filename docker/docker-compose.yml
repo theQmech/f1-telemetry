@@ -9,7 +9,7 @@ services:
       - "20777:20777/udp"
     environment:
       JVM_OPTS: >
-        -DKAFKA_BOOTSTRAP_SERVER=kafka:29092
+        -DKAFKA_BOOTSTRAP_SERVER=kafka\:29092
       TARGET_CLASS: xyz.rganvir.f1telemetry.router.App
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.1
