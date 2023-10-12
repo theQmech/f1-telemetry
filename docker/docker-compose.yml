@@ -32,3 +32,20 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  visualizer:
+    image: rganvir/visualizer
+    build: ../visualizer
+    ports:
+      - "8050:8050"
+  # Mock UDP feed producer. Useful for testing.
+  mock-feed:
+    image: rganvir/bash
+    build:
+      dockerfile: ./bash.Dockerfile
+    environment:
+      - SINK_HOST=message-router
+      - SINK_PORT=20777
+    volumes:
+      - ./generate_udp_feed.sh:/script.sh
+      - ../packet_dump:/packet_dump
+    entrypoint: [ "./script.sh" ]
