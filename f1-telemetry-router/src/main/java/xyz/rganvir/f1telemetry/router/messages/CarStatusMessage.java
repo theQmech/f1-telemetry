@@ -1,6 +1,6 @@
 package xyz.rganvir.f1telemetry.router.messages;
 
-public record CarStatusMessage(CarStatusData[] carStatusData) implements GameMessage {
+public record CarStatusMessage(PacketHeader header, CarStatusData[] carStatusData) implements GameMessage {
     @Override
     public MessageType type() {
         return MessageType.CAR_STATUS;

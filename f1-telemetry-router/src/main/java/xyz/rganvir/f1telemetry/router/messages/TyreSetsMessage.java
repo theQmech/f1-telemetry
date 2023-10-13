@@ -7,7 +7,7 @@ public record TyreSetsMessage(int cardId, TyreSetData[] tyreSetData, int fittedI
     }
 
     record TyreSetData(
-            int     actualTyreCompound,    // Actual tyre compound used
+            PacketHeader header, int     actualTyreCompound,    // Actual tyre compound used
             int     visualTyreCompound,    // Visual tyre compound used
             int     wear,                  // Tyre wear (percentage)
             int     available,             // Whether this set is currently available

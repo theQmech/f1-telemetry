@@ -26,20 +26,20 @@ public enum PacketParser {
         System.out.printf("Parsing for packetId [%d] remaining [%d]B%n", header.packetId(), byteParser.remaining());
 
         return switch (header.packetId()) {
-            case 0 -> GameMessageFactory.motionMessage(byteParser);
-            case 1 -> GameMessageFactory.sessionMessage(byteParser);
-            case 2 -> GameMessageFactory.lapDataMessage(byteParser);
-            case 3 -> GameMessageFactory.eventMessage(byteParser);
-            case 4 -> GameMessageFactory.participantsMessage(byteParser);
-            case 5 -> GameMessageFactory.carSetups(byteParser);
-            case 6 -> GameMessageFactory.carTelemetryMessage(byteParser);
-            case 7 -> GameMessageFactory.carStatusMessage(byteParser);
-            case 8 -> GameMessageFactory.finalClassification(byteParser);
-            case 9 -> GameMessageFactory.lobbyInfo(byteParser);
-            case 10 -> GameMessageFactory.carDamagePacket(byteParser);
-            case 11 -> GameMessageFactory.sessionHistoryMessage(byteParser);
-            case 12 -> GameMessageFactory.tyreSetsMessage(byteParser);
-            case 13 -> GameMessageFactory.motionExtendedMessage(byteParser);
+            case 0 -> GameMessageFactory.motionMessage(header, byteParser);
+            case 1 -> GameMessageFactory.sessionMessage(header, byteParser);
+            case 2 -> GameMessageFactory.lapDataMessage(header, byteParser);
+            case 3 -> GameMessageFactory.eventMessage(header, byteParser);
+            case 4 -> GameMessageFactory.participantsMessage(header, byteParser);
+            case 5 -> GameMessageFactory.carSetups(header, byteParser);
+            case 6 -> GameMessageFactory.carTelemetryMessage(header, byteParser);
+            case 7 -> GameMessageFactory.carStatusMessage(header, byteParser);
+            case 8 -> GameMessageFactory.finalClassification(header, byteParser);
+            case 9 -> GameMessageFactory.lobbyInfo(header, byteParser);
+            case 10 -> GameMessageFactory.carDamagePacket(header, byteParser);
+            case 11 -> GameMessageFactory.sessionHistoryMessage(header, byteParser);
+            case 12 -> GameMessageFactory.tyreSetsMessage(header, byteParser);
+            case 13 -> GameMessageFactory.motionExtendedMessage(header, byteParser);
             default -> throw new IllegalStateException("PacketHeaderId not supported: " + header.packetId());
         };
     }

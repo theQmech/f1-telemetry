@@ -1,6 +1,7 @@
 package xyz.rganvir.f1telemetry.router.messages;
 
 public record SessionHistoryMessage(
+        PacketHeader header,
         int carIdx, // Index of the car this lap data relates to
         int numLaps, // Num laps in the data (including current partial lap)
         int numTyreStints, // Number of tyre stints in the data

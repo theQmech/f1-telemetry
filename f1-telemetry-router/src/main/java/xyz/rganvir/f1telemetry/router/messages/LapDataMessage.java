@@ -1,6 +1,6 @@
 package xyz.rganvir.f1telemetry.router.messages;
 
-public record LapDataMessage(LapData[] lapdata, int timeTrialPBCarIdx, int timeTrialRivalCarIdx)
+public record LapDataMessage(PacketHeader header, LapData[] lapdata, int timeTrialPBCarIdx, int timeTrialRivalCarIdx)
         implements GameMessage {
     @Override
     public MessageType type() {

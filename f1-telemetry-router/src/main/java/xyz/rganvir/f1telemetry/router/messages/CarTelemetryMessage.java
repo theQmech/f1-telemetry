@@ -1,7 +1,7 @@
 package xyz.rganvir.f1telemetry.router.messages;
 
 public record CarTelemetryMessage(
-        CarTelemetryData[] carTelemetryData,
+        PacketHeader header, CarTelemetryData[] carTelemetryData,
         int mfdPanelIndex,
         int mfdPanelIndexSecondPlayer,
         int suggestedGear)
