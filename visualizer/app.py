@@ -1,6 +1,7 @@
 from dash import Dash, html, dcc, callback, Output, Input
 import plotly.express as px
 import pandas as pd
+from subscriber import Subscriber
 
 df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder_unfiltered.csv')
 
@@ -20,5 +21,10 @@ def update_graph(value):
     dff = df[df.country==value]
     return px.line(dff, x='year', y='pop')
 
+print ("Hello")
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    print ("In main")
+    subscriber = Subscriber('f1telemetry.car_telemetry')
+    subscriber.tail_messages()
+    # app.run(debug=True)

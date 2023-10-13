@@ -35,8 +35,13 @@ services:
   visualizer:
     image: rganvir/visualizer
     build: ../visualizer
+    depends_on:
+      - kafka
+    restart: on-failure
     ports:
       - "8050:8050"
+    environment:
+      - BOOTSTRAP_SERVERS=kafka:9092
   # Mock UDP feed producer. Useful for testing.
   mock-feed:
     image: rganvir/bash
