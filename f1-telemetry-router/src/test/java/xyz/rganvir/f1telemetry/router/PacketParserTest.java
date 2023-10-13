@@ -31,13 +31,13 @@ class PacketParserTest {
     @ParameterizedTest
     @MethodSource("binaryCapturesSmallSet")
     void shouldParseHeader(byte[] rawData) {
-        ByteBufferParser buffer = new ByteBufferParser(rawData);
+        ByteBufferParser buffer = new ByteBufferParser(rawData, 0, rawData.length);
         assertThat(PacketParser.getPacketHeader(buffer)).extracting(PacketHeader::packetFormat).isEqualTo(2023);
     }
 
     @ParameterizedTest
     @MethodSource("binaryCapturesSmallSet")
     void shouldParsePacketIfSupported(byte[] rawData) {
-        assertThatNoException().isThrownBy(() -> PacketParser.parse(rawData));
+        assertThatNoException().isThrownBy(() -> PacketParser.parse(rawData, rawData.length));
     }
 }

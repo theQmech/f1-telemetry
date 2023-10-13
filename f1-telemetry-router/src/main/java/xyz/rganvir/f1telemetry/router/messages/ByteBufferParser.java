@@ -6,8 +6,8 @@ import java.nio.ByteOrder;
 public class ByteBufferParser {
     private final ByteBuffer buffer;
 
-    public ByteBufferParser(byte[] rawData) {
-        this.buffer = ByteBuffer.wrap(rawData);
+    public ByteBufferParser(byte[] rawData, int offset, int length) {
+        this.buffer = ByteBuffer.wrap(rawData, 0, length);
         this.buffer.order(ByteOrder.LITTLE_ENDIAN);
     }
 

@@ -3,16 +3,15 @@ package xyz.rganvir.f1telemetry.router.messages;
 import com.google.common.annotations.VisibleForTesting;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public enum PacketParser {
     ;
 
-    public static List<GameMessage> parse(byte[] rawData) {
+    public static List<GameMessage> parse(byte[] rawData, int length) {
         ArrayList<GameMessage> messages = new ArrayList<>();
 
-        ByteBufferParser byteParser = new ByteBufferParser(rawData);
+        ByteBufferParser byteParser = new ByteBufferParser(rawData, 0, length);
         while (byteParser.hasRemaining()) {
             GameMessage singleMessage = getSingleMessage(byteParser);
             messages.add(singleMessage);
@@ -23,6 +22,8 @@ public enum PacketParser {
     // returns null if packet not supported.
     private static GameMessage getSingleMessage(ByteBufferParser byteParser) {
         PacketHeader header = getPacketHeader(byteParser);
+
+        System.out.printf("Parsing for packetId [%d] remaining [%d]B%n", header.packetId(), byteParser.remaining());
 
         return switch (header.packetId()) {
             case 0 -> GameMessageFactory.motionMessage(byteParser);

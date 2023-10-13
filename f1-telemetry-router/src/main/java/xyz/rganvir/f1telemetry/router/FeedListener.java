@@ -29,7 +29,7 @@ public class FeedListener {
                 socket.receive(packet);
                 System.out.printf("Received packet of size [%d]B%n", packet.getLength());
 
-                final var messages = PacketParser.parse(buffer);
+                final var messages = PacketParser.parse(buffer, packet.getLength());
                 messages.forEach(msg -> {
                     if (msg == null) {
                         System.out.println("Skipping null message");
