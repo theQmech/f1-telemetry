@@ -3,6 +3,8 @@ package xyz.rganvir.f1telemetry.router.messages;
 public enum GameMessageFactory {
     ;
 
+    private static final int headerSize = 29;
+
     public static CarDamageMessage carDamagePacket(ByteBufferParser buffer) {
         CarDamageMessage.CarDamageData[] data = new CarDamageMessage.CarDamageData[22];
         for (int i = 0; i < 22; ++i) {
@@ -199,8 +201,8 @@ public enum GameMessageFactory {
                     byteParser.getUint8(),
                     byteParser.getUint16(),
                     byteParser.getUint16Array(4),
-                    byteParser.getUint16Array(4),
-                    byteParser.getUint16Array(4),
+                    byteParser.getUint8Array(4),
+                    byteParser.getUint8Array(4),
                     byteParser.getUint16(),
                     byteParser.getFloatArray(4),
                     byteParser.getUint8Array(4)
@@ -209,5 +211,40 @@ public enum GameMessageFactory {
 
         return new CarTelemetryMessage(
                 data, byteParser.getUint8(), byteParser.getUint8(), byteParser.getUint8());
+    }
+
+    public static GameMessage motionExtendedMessage(ByteBufferParser byteParser) {
+        byteParser.advance(217 - headerSize);
+        return null;
+    }
+
+    public static GameMessage sessionMessage(ByteBufferParser byteParser) {
+        byteParser.advance(644 - headerSize);
+        return null;
+    }
+
+    public static GameMessage eventMessage(ByteBufferParser byteParser) {
+        byteParser.advance(45 - headerSize);
+        return null;
+    }
+
+    public static GameMessage participantsMessage(ByteBufferParser byteParser) {
+        byteParser.advance(1306 - headerSize);
+        return null;
+    }
+
+    public static GameMessage carSetups(ByteBufferParser byteParser) {
+        byteParser.advance(1107 - headerSize);
+        return null;
+    }
+
+    public static GameMessage finalClassification(ByteBufferParser byteParser) {
+        byteParser.advance(1020 - headerSize);
+        return null;
+    }
+
+    public static GameMessage lobbyInfo(ByteBufferParser byteParser) {
+        byteParser.advance(1218 - headerSize);
+        return null;
     }
 }

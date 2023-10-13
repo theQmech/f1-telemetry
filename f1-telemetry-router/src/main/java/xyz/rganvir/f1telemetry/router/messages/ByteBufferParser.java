@@ -67,4 +67,17 @@ public class ByteBufferParser {
         }
         return data;
     }
+
+    public boolean hasRemaining() {
+        return this.buffer.hasRemaining();
+    }
+
+    public void advance(int step) {
+        int newPosition = this.buffer.position() + step;
+        this.buffer.position(newPosition);
+    }
+
+    public int remaining() {
+        return this.buffer.remaining();
+    }
 }

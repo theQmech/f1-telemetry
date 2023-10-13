@@ -27,13 +27,16 @@ public class FeedListener {
         try (DatagramSocket socket = new DatagramSocket(port)) {
             while (!shutdown) {
                 socket.receive(packet);
+                System.out.printf("Received packet of size [%d]B%n", packet.getLength());
 
-                GameMessage message = PacketParser.parse(buffer);
-                System.out.printf("Received message %s%n", message == null ? "NULL" : message.type().name());
-                if (message != null) {
-                    this.publisher.publish(message);
-                }
-
+                final var messages = PacketParser.parse(buffer);
+                messages.forEach(msg -> {
+                    if (msg == null) {
+                        System.out.println("Skipping null message");
+                    } else {
+                        this.publisher.publish(msg);
+                    }
+                });
                 packet.setLength(this.maxPacketSize);
             }
         } catch (IOException e) {
