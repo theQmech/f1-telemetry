@@ -6,7 +6,8 @@ wait_time=${WAIT_TIME:-"5"}
 
 echo "Script params" $sink_host $sink_port $wait_time
 
-for fname in /packet_dump/*.bin; do
-  cat "$fname" | nc -u -q"$wait_time" "$sink_host" "$sink_port"
+for i in $(seq 0 14000); do
+  fname="/packet_dump/""$i"".bin"
+  nc -u -q"$wait_time" "$sink_host" "$sink_port" < "$fname"
   echo "Sent " "$fname"
 done
