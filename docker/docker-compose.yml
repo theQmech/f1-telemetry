@@ -44,13 +44,12 @@ services:
       - BOOTSTRAP_SERVERS=kafka:9092
   # Mock UDP feed producer. Useful for testing.
   mock-feed:
-    image: rganvir/bash
-    build:
-      dockerfile: ./bash.Dockerfile
+    image: python:3.10
     environment:
       - SINK_HOST=message-router
       - SINK_PORT=20777
+      - WAIT_MS=50
     volumes:
-      - ./generate_udp_feed.sh:/script.sh
+      - ./generate_udp_feed.py:/script.py
       - ../packet_dump:/packet_dump
-    entrypoint: [ "./script.sh" ]
+    command: [ "python", "-u", "./script.py" ]

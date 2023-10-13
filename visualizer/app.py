@@ -21,10 +21,7 @@ def update_graph(value):
     dff = df[df.country==value]
     return px.line(dff, x='year', y='pop')
 
-print ("Hello")
-
 if __name__ == '__main__':
-    print ("In main")
-    subscriber = Subscriber('f1telemetry.car_telemetry')
+    subscriber = Subscriber(['f1telemetry.car_telemetry', 'f1telemetry.lap_data'])
     subscriber.tail_messages()
     # app.run(debug=True)
