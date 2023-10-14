@@ -4,6 +4,6 @@ ADD requirements.txt ./
 
 RUN pip install -r requirements.txt
 
-ADD *.py ./
+ADD visualizer ./visualizer
 
-CMD ["python", "-u", "app.py"]
+CMD ["python", "-u", "-m", "visualizer"]
