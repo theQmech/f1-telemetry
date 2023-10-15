@@ -10,67 +10,59 @@ GROUP_ID = uuid.uuid4().hex
 
 
 class Subscriber:
-    def __init__(self, topics: List[str]):
+    def __init__(self, name: str, topic: str):
+        self.name = name
         self.conf = {
             "bootstrap.servers": BOOTSTRAP_SERVERS,
             "group.id": GROUP_ID,
             "session.timeout.ms": 10_000,
         }
-        self.topics = topics
+        self.topic = topic
         self.retry_interval = 5
-        self.consumer: Consumer = None
+        self._consumer: Consumer = None
+        self._fetched = []
 
     def start(self):
-        self.consumer = Consumer(self.conf)
-        print(f"Subscriber on {self.conf}")
+        self._consumer = Consumer(self.conf)
+        print(f"Subscriber {self.name}: connected with conf {self.conf}")
 
-        while True:
-            available_topics = self.consumer.list_topics().topics.keys()
-            if set(self.topics) <= set(available_topics):
-                self.consumer.subscribe(self.topics)
-                break
+        while self.topic not in self._consumer.list_topics().topics.keys():
+            print(
+                f"Subscriber {self.name}: topic {self.topic} not ready. Retrying in {self.retry_interval}s"
+            )
             time.sleep(self.retry_interval)
-            print(f"Required topics not ready. Retrying in {self.retry_interval}s")
-        print(f"Subscibed to {self.topics}")
+        self._consumer.subscribe([self.topic])
 
-    def get_messages_brief(self, num_messages: int, timeout: float) -> List[Dict]:
-        if self.consumer is None:
-            print("Subscriber not started yet")
-            return []
+        print(f"Subscriber {self.name}: subscibed to {self.topic}")
 
-        results = []
-        for msg in self.get_messages(num_messages, timeout):
-            topic = msg.topic()
+        # Prefetch to overcome initial burst of demand
+        self.__pull_messages(10, 1.0)
+
+    def get_next_messages(self, num_messages: int, timeout: float) -> List[Dict]:
+        while len(self._fetched) < num_messages:
+            self.__pull_messages(10 * num_messages, timeout)
+
+        results = self._fetched[:num_messages]
+        self._fetched = self._fetched[num_messages:]
+
+        return results
+
+    def __pull_messages(self, num_messages: int, timeout: float):
+        if self._consumer is None:
+            print(f"Subscriber {self.name}: subscriber not yet ready")
+
+        print(f"Subscriber {self.name}: Polling messages")
+        messages = self._consumer.consume(num_messages, timeout)
+        print(f"Subscriber {self.name}: Received {len(messages)} messages")
+        self._fetched += self.__process_messages(messages)
+
+    def __process_messages(self, messages) -> Dict:
+        result = []
+        for msg in messages:
             if msg.error():
-                print(f"Consumer error: {msg.error()}")
+                print(f"Subscriber {self.name}: message error {msg.error()}")
             else:
                 content = json.loads(msg.value().decode("utf-8"))
-                results.append(self.extract_message_info(topic, content))
-
-        return results
-
-    def get_messages(self, num_messages: int, timeout: float):
-        print("Polling messages")
-        results = self.consumer.consume(num_messages, timeout)
-        print(f"Received {len(results)} messages")
-        return results
-
-    def extract_message_info(self, topic: str, content: Dict):
-        playerIdx = content["header"]["playerCarIndex"]
-        info = {
-            "topic": topic,
-            "frame": content["header"]["frameIdentifier"],
-            "time": content["header"]["sessionTime"],
-            "playerIdx": playerIdx,
-        }
-
-        if topic == "f1telemetry.car_telemetry":
-            info["speed"] = content["carTelemetryData"][playerIdx]["speed"]
-            info["throttle"] = content["carTelemetryData"][playerIdx]["throttle"]
-            info["brake"] = content["carTelemetryData"][playerIdx]["brake"]
-        elif topic == "f1telemetry.lap_data":
-            info["lapDistance"] = content["lapData"][playerIdx]["lapDistance"]
-        else:
-            info["error"] = "Unknown message type"
-
-        return info
+                content["topic"] = msg.topic()
+                result.append(content)
+        return result

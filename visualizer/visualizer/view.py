@@ -1,3 +1,5 @@
+import numpy as np
+import pandas as pd
 from .singletons import app, main_dataframe
 from dash import html, dcc
 from dash.dependencies import Input, Output
@@ -16,8 +18,6 @@ def create_layout():
                 interval=5 * 1000,  # in milliseconds
                 n_intervals=0,
             ),
-            # dcc.Store stores the intermediate value
-            dcc.Store(id="intermediate-value"),
         ]
     )
 
@@ -28,9 +28,10 @@ def create_layout():
 )
 def update_graph_live(n):
     print("tick", n, flush=True)
-    df = main_dataframe.get_dataframe("f1telemetry.car_telemetry")
+    lap_dist, speed = main_dataframe.get_updated_data(5)
+    df = pd.DataFrame({"LapDist": lap_dist, "Speed": speed})
     print(df, flush=True)
 
-    fig = px.line(df, x="time", y="speed")
+    fig = px.line(df, x="LapDist", y="Speed")
 
     return fig
