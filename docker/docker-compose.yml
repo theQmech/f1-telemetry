@@ -49,6 +49,7 @@ services:
       - SINK_HOST=message-router
       - SINK_PORT=20777
       - WAIT_MS=50
+      - PACKETS_SRC=/packet_dump/small/
     volumes:
       - ./generate_udp_feed.py:/script.py
       - ../packet_dump:/packet_dump
